@@ -97,8 +97,6 @@ void edit_train() {
     FILE* file_ptr;
     int continue_edit = 1;
 
-    
-
     file_ptr = fopen(get_database_file_path(), "rb+");
 
     if (file_ptr == NULL) {
@@ -121,12 +119,12 @@ void edit_train() {
         return;
     }
 
+	print_DB();
+
     long long edit_index = get_valid_int("Введите номер для редактирования\n", 1, count) - 1;
 
     if (!ask_continue("Начать редактирование? (1 - да, 0 - нет)\n", "Редактирование отменено\n"))
         return;
-
-    print_DB();
 
     // Читаем запись, которую будем редактировать
     train = read_train_by_index(file_ptr, edit_index);
