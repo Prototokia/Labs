@@ -71,6 +71,8 @@ void set_database_file_path(const char* new_path);
 int init_DB_file();
 int change_DB_file();
 int copy_all_records(const char* source_path, const char* destination_path);
+void save_config_file();
+void load_config_file();
 long long get_record_count(FILE* file_ptr);
 Train read_train_by_index(FILE* file_ptr, long long index);
 int write_train_by_index(FILE* file_ptr, long long index, Train train);
@@ -85,4 +87,6 @@ void delete_train();
 void process_request();
 
 #endif /* COMMON_H */
+
+
 
