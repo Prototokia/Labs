@@ -65,7 +65,7 @@ void print_info(const char* format, ...);
 void print_table_header();
 void print_train_row(long long index, Train train);
 
-// ------------------------------- file_io.cpp ---------------------------------
+// ------------------------------- file_manage.cpp ---------------------------------
 const char* get_database_file_path();
 void set_database_file_path(const char* new_path);
 int init_DB_file();
@@ -79,7 +79,7 @@ int write_train_by_index(FILE* file_ptr, long long index, Train train);
 Train read_train_at_current(FILE* file_ptr);
 int write_train_at_current(FILE* file_ptr, Train train);
 
-// ------------------------------- db_ops.cpp ---------------------------------
+// ------------------------------- db_functions.cpp ---------------------------------
 void print_DB();
 void add_train();
 void edit_train();
