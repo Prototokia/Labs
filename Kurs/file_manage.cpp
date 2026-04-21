@@ -70,7 +70,7 @@ int copy_all_records(const char* source_path, const char* destination_path) {
 }
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 // Функция для сохранения пути к базе данных в файле конфигурации в текущей папке программы
-static void save_config_file() {
+void save_config_file() {
 	FILE* config = fopen("dbpath.cfg", "w");
 	if (config != NULL) {
 		fprintf(config, "%s", database_file_path);
@@ -80,7 +80,7 @@ static void save_config_file() {
 }
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 // Функция для загрузки пути к базе данных из файла конфигурации
-static void load_config_file() {
+void load_config_file() {
 	FILE* config = fopen("dbpath.cfg", "rb");
 	if (config == NULL) return; // Конфига нет - оставляем путь по умолчанию
 
