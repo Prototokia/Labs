@@ -2,6 +2,7 @@
 #include <iostream>
 #include <time.h>
 #include <windows.h>
+#include <string.h>
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 #define LINE_SIZE 512
 #define MAX_ENTRIES 1000
@@ -30,6 +31,8 @@ void get_fixed_string_or_empty(const char* prompt, int max_length, char* destina
 
 // Функции обработки строк
 void to_lower_str(char* str);
+int compare_ignore_case(const char* a, const char* b);
+unsigned char tolower_1251(unsigned char c);
 char* delete_spaces(char* str);
 
 // Функции работы с файлом данных
@@ -176,7 +179,33 @@ void get_fixed_string_or_empty(const char* prompt, int max_length, char* destina
 // Аргументы char* str - строка для модификации 
 void to_lower_str(char* str) {
     for (int i = 0; str[i]; i++)
-        str[i] = tolower((unsigned char)str[i]);
+        str[i] = tolower_1251((unsigned char)str[i]);
+}
+//---------------------------------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------------------------------
+// Функция преобразования символа в нижний регистр для кодировки Windows-1251.
+// Используется в stristr для регистронезависимого поиска русских букв.
+// Аргументы: c - исходный символ (unsigned char, чтобы избежать проблем со знаковым расширением).
+// Возвращает: символ в нижнем регистре, если возможно, иначе исходный символ.
+unsigned char tolower_1251(unsigned char c) {
+    if (c >= 0xC0 && c <= 0xDF) // Русские заглавные буквы от А до Я (Кроме Ё)
+        return c + 0x20;
+    if (c == 0xA8) // Заглавная буква Ё
+        return 0xB8;
+    return tolower(c); // Для латиницы и других символов
+}
+//---------------------------------------------------------------------------------------------------------------------------------------------------------
+// Регистронезависимое сравнение сравнение строк
+// Аргументы: const char* str1, const char* str2
+// Возвращает 0 - при совпадении, 1 - при различии
+int compare_ignore_case(const char* str1, const char* str2) {
+    while (*str1 && *str2) {
+        if (tolower_1251((unsigned char)*str1) != tolower_1251((unsigned char)*str2))
+            return 1;
+        str1++;
+        str2++;
+    }
+    return (*str1 == *str2) ? 0 : 1;
 }
 //---------------------------------------------------------------------------------------------------------------------------------------------------------
 // Функция для удаления всех пробелов в начале и конце строки
@@ -380,7 +409,7 @@ void play_guess_author(const char* genre_filter) {
         strcpy(user_ans, answer);
 
         // Сравниваем
-        if (_stricmp(correct_ans, user_ans) == 0) {
+        if (compare_ignore_case(correct_ans, user_ans) == 0) {
             printf("Правильно!\n");
             correct++;
         }
@@ -445,7 +474,7 @@ void play_guess_title(const char* genre_filter) {
         strcpy(correct_ans, entry.title);
         strcpy(user_ans, answer);
 
-        if (_stricmp(correct_ans, user_ans) == 0) {
+        if (compare_ignore_case(correct_ans, user_ans) == 0) {
             printf("Правильно!\n");
             correct++;
         }
