@@ -367,7 +367,7 @@ void play_guess_author(const char* genre_filter) {
         printf("Произведение: %s\n", entry.title);
         printf("Описание: %s\n", entry.description);
 
-        get_fixed_string("Ваш ответ (или 'q' для выхода): ", STRING_SIZE - 1, answer);
+        get_fixed_string("Ваш ответ (в формате А.С.Пушкин) (или 'q' для выхода): ", STRING_SIZE - 1, answer);
 
         // Проверка выхода
         if (strcmp(answer, "q") == 0 || strcmp(answer, "Q") == 0) break;
@@ -378,11 +378,9 @@ void play_guess_author(const char* genre_filter) {
 
         strcpy(correct_ans, entry.author);
         strcpy(user_ans, answer);
-        to_lower_str(correct_ans);
-        to_lower_str(user_ans);
 
         // Сравниваем
-        if (strcmp(correct_ans, user_ans) == 0) {
+        if (_stricmp(correct_ans, user_ans) == 0) {
             printf("Правильно!\n");
             correct++;
         }
@@ -446,10 +444,8 @@ void play_guess_title(const char* genre_filter) {
 
         strcpy(correct_ans, entry.title);
         strcpy(user_ans, answer);
-        to_lower_str(correct_ans);
-        to_lower_str(user_ans);
 
-        if (strcmp(correct_ans, user_ans) == 0) {
+        if (_stricmp(correct_ans, user_ans) == 0) {
             printf("Правильно!\n");
             correct++;
         }
